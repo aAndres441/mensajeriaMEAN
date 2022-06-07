@@ -11,16 +11,11 @@
     "url": "git+https://github.com/aAndres441/mensajeriaMEAN.git"
   },
   "keywords": [
-    "\"npx",
-    "npm",
-    "mongoAtlas",
-    "github",
-    "cors",
-    "express",
-    "node.js",
-    "nodemon\""
+    "npx", "npm", "mongoAtlas", "github", "cors",
+    "express", "node.js",  "nodemon", "bcryptjs",
+    "body-parser", "connect-multiparty"
   ],
-  "author": "\"Andres_Arias <andrarias@gmail.com>",
+  "author": "Andres_Arias <andrarias@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/aAndres441/mensajeriaMEAN/issues"
