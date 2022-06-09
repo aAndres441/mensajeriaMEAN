@@ -1,0 +1,47 @@
+[
+    {
+        "name": "Ana",
+        "surname": "Torena",
+        "nick": null,
+        "email": "ana@gmail.com",
+        "password": "123",
+        "role": "adim",
+        "image": null
+    },
+    {
+        "name": "Marcos",
+        "surname": "Van Basten",
+        "nick": null,
+        "email": "mar@gmail.com",
+        "password": "123",
+        "role": "adim",
+        "image": null
+    },
+    {
+        "name": "Laura",
+        "surname": "Garcia",
+        "nick": null,
+        "email": "lau@gmail.com",
+        "password": "123",
+        "role": "adim",
+        "image": null
+    },
+    {
+        "name": "Lolo",
+        "surname": "Casanova",
+        "nick": null,
+        "email": "lolo@gmail.com",
+        "password": "123",
+        "role": "adim",
+        "image": null
+    },
+    {
+        "name": "Juan",
+        "surname": "Salgado",
+        "nick": null,
+        "email": "juan@gmail.com",
+        "password": "123",
+        "role": "cli",
+        "image": null
+    }
+]
