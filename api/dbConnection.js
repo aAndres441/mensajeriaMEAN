@@ -1,28 +1,32 @@
 // Using Node.js `require()`
 const mongoose = require('mongoose');
-// Using ES6 imports
+// Using ES6 imports en tsconfig.json
 //import mongoose from 'mongoose';
+const Schema = mongoose.Schema;
 
 class Database {
   async init() {
 
-    const Schema = mongoose.Schema;
+    //const Schema = mongoose.Schema;
     const ObjectId = Schema.ObjectId;
 
-    const BlogPost = new Schema({
+    const blogPost = new Schema({
       author: ObjectId,
-      title: String,
+      title: {
+		type: String,
+		required: true
+	  },
       body: String,
       date: Date
     });
 
-    const MyModel = mongoose.model(BlogPost);
+    const MyModel = mongoose.model(blogPost);
     const instance1 = new MyModel();
     instance.my.key = 'hello';
     instance.save(function (err) {
       //
     });
-    BlogPost.find({}, function (err, docs) {
+    blogPost.find({}, function (err, docs) {
       // docs.forEach
     });
     const instance2 = await MyModel.findOne({});
@@ -52,4 +56,5 @@ class Database {
 
   }
 }
-export default Database;
+//export default Database;
+//module.exports = Blog = mongoose.model('blog', blogPost);

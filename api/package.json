@@ -3,17 +3,32 @@
   "version": "1.0.0",
   "description": "Backend para mensajeria stck MEAN",
   "main": "index.js",
+  "type": "commonjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": " nodemon index.ts",
+    "start": "ts-node-dev index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rimraf rotes"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/aAndres441/mensajeriaMEAN.git"
   },
   "keywords": [
-    "npx", "npm", "mongoAtlas", "github", "cors",
-    "express", "node.js",  "nodemon", "bcryptjs",
-    "body-parser", "connect-multiparty"
+    "npx",
+    "npm",
+    "nodemon",
+    "ts-node-dev",
+    "mongoAtlas",
+    "github",
+    "cors",
+    "express",
+    "node.js",
+    "bcryptjs",
+    "body-parser",
+    "connect-multiparty",
+    "jwt",
+    "cors"
   ],
   "author": "Andres_Arias <andrarias@gmail.com>",
   "license": "MIT",
@@ -29,9 +44,13 @@
     "express": "^4.18.1",
     "jwt-simple": "^0.5.6",
     "moment": "^2.29.3",
+    "mongodb": "^4.7.0",
     "mongoose": "^6.3.5"
   },
   "devDependencies": {
-    "nodemon": "^2.0.16"
+    "@types/express": "^4.17.13",
+    "nodemon": "^2.0.16",
+    "rimraf": "^3.0.2",
+    "ts-node-dev": "^2.0.0"
   }
 }
