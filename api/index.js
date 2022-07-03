@@ -4,6 +4,7 @@ const express = require('express');  //import express from 'express';
 const cors = require('cors');
 const mongoose = require('mongoose');
 const bodyParser = require("body-parser");
+import IUser from './interfaces/Iuser';
 
 function init() { //const init = async () => { //function async(init)
 
