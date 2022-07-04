@@ -25,14 +25,14 @@ const MONGO_DB = process.env.DATABASE || url;
 const passAtlas = ' 1vnsvO5xVhOFGrWp ';
 const uriAtlas = 'mongodb+srv://FeniFeni:1vnsvO5xVhOFGrWp@cluster0.vz00u.mongodb.net/mensajesMEAN?retryWrites=true&w=majority';
 //#region options conect to BD
- const options2 = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true
+const options2 = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+  useCreateIndex: true
 
-    //son opciones deprecadas desde V 6 mongoose, ya n o van
-  };
+  //son opciones deprecadas desde V 6 mongoose, ya n o van
+};
 /*  const options = {
     autoIndex: false, // Don't build indexes
     maxPoolSize: 10, // Maintain up to 10 socket connections
@@ -40,58 +40,77 @@ const uriAtlas = 'mongodb+srv://FeniFeni:1vnsvO5xVhOFGrWp@cluster0.vz00u.mongodb
     socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
     family: 4, // Use IPv4, skip trying IPv6
   }; */
-  //#endregion
+//#endregion
 
 //#region init()
 const init2 = async () => {
-    console.time("Tiempo coneccion a BD");
-      try {
-         /*const conn = await mongoose.connect(
-        MONGO_DB,options2,(er:any)=>{
-          if(er) console.log("Error occurred connecting to MongoDB...",er);          
-          console.log(`Connected to MongoDB!\nNAME DB: ${mongoose.connection.getClient().options.dbName}`);
-        }); */
+  console.time("Tiempo coneccion a BD");
+  try {
+    /*const conn = await mongoose.connect(
+   MONGO_DB,options2,(er:any)=>{
+     if(er) console.log("Error occurred connecting to MongoDB...",er);          
+     console.log(`Connected to MongoDB!\nNAME DB: ${mongoose.connection.getClient().options.dbName}`);
+   }); */
 
-        /*Si crea una conexión personalizada, use la model()función de esa conexión en su lugar.
-        const connection = mongoose.createConnection('mongodb://localhost:27017/test');
-        const Tank = connection.model('Tank', yourSchema);*/
+    /*Si crea una conexión personalizada, use la model()función de esa conexión en su lugar.
+    const connection = mongoose.createConnection('mongodb://localhost:27017/test');
+    const Tank = connection.model('Tank', yourSchema);*/
 
-       const conn = await mongoose.connect(MONGO_DB,{ serverSelectionTimeoutMS: 5000}) //cuánto tiempo mongoose.connect()se volverá a intentar la conexión inicial antes de fallar.
-       //const conn = await mongoose.connect(MONGO_DB, options2)
-       
-        console.log(`Connected to MongoDB!\nNAME DB: ${mongoose.connection.getClient().options.dbName}`);
-        console.timeEnd("Tiempo coneccion a BD");
+    const conn = await mongoose.connect(MONGO_DB, { serverSelectionTimeoutMS: 5000 }) //cuánto tiempo mongoose.connect()se volverá a intentar la conexión inicial antes de fallar.
+    //const conn = await mongoose.connect(MONGO_DB, options2)
 
-       // insertarPet();
-        //insertarUsus();
-        //insertOwner();
-        //insertTank().catch(err => console.log(err,'Ta le erro'));
-       //findOne();
-       //findOneAndUpdate();
-      
-       }
-       catch{
-        ()=>{console.log("Error occurred connecting to MongoDB...");}
-       }
-       
-       //manejar los errores después de que se estableció la conexión inicial
-       mongoose.connection.on('error',  (err:any)=> {
-           console.log(err, 'Error');
-         });
+    console.log(`Connected to MongoDB!\nNAME DB: ${mongoose.connection.getClient().options.dbName}`);
 
-         //escuchar el disconnectedevento para informar cuando Mongoose se desconecta de MongoDB.
+    const state = await conn.connection.readyState; // MongoClient { ... }
+    console.log(`-ESTADO- ${state}`);
 
-       /*
-    ¡Importante! Si abrió una conexión separada utilizando ´
-    mongoose.createConnection()pero intenta acceder al modelo
-     a través de mongoose.model('ModelName')él, no funcionará
-      como se esperaba, ya que no está conectado a una conexión
-       de base de datos activa. En este caso accede a tu modelo
-        a través de la conexión que creaste:
-     */
-    ////const conn = mongoose.createConnection('your connection string');
-    
-    /////module.exports = db;  //esta ser la requerida con .db desde index o donde sea que este el express(), etc 
+    //console.log('COUNT',conn.Collection('calabrese').count());
+
+    console.timeEnd("Tiempo coneccion a BD");
+
+    /* cerrarConeccion(); */
+    mongoose.disconnect();
+    const state2 = await conn.connection.readyState; // MongoClient { ... }
+    console.log(`-ESTADO- ${state2}`);
+
+
+    // insertarPet();
+    //insertarUsus();
+    //insertOwner();
+    //insertTank().catch(err => console.log(err,'Ta le erro'));
+    //findOne();
+    //findOneAndUpdate();
+    //findAll();    
+
+
+    //cerrarConeccion();
+
+    /* setTimeout(() =>{
+      findOne();
+    },6000); */
+  }
+  catch {
+    () => { console.log("Error occurred connecting to MongoDB..."); }
+  }
+
+  //manejar los errores después de que se estableció la conexión inicial
+  mongoose.connection.on('error', (err: any) => {
+    console.log(err, 'Error');
+  });
+
+  //escuchar el disconnectedevento para informar cuando Mongoose se desconecta de MongoDB.
+
+  /*
+¡Importante! Si abrió una conexión separada utilizando ´
+mongoose.createConnection()pero intenta acceder al modelo
+a través de mongoose.model('ModelName')él, no funcionará
+ como se esperaba, ya que no está conectado a una conexión
+  de base de datos activa. En este caso accede a tu modelo
+   a través de la conexión que creaste:
+*/
+  ////const conn = mongoose.createConnection('your connection string');
+
+  /////module.exports = db;  //esta ser la requerida con .db desde index o donde sea que este el express(), etc 
 
 }
 init2();
@@ -109,106 +128,151 @@ const pub = require('./models/publicacionModel');
 
 //#endregion
 
-//#region PRUEBA
-interface Itank {name?:String,isMayor:boolean}
+//#region PRUEBA Tank
+interface Itank { name?: String, isMayor: boolean }
 const yourSchema = new mongoose.Schema(
-  { 
-  name:String, 
-  size: {type:String,required: [true, 'Why no size?'],enum: ['small', 'big']},
-  date: { type: Date, default: Math.floor(Date.now() / 1000) },
-  cel: {
-    type: Number,
-    min: [6, 'Must be at least 6, got {VALUE}'],
-    max: [32, 'Must be at greater 22, got {VALUE}']
-    },  
+  {
+    name: String,
+    size: { type: String, required: [true, 'Why no size?'], enum: ['small', 'big'] },
+    date: { type: Date, default: Math.floor(Date.now() / 1000) },
+    cel: {
+      type: Number,
+      min: [6, 'Must be at least 6, got {VALUE}'],
+      max: [32, 'Must be at greater 22, got {VALUE}']
+    },
   },
   {
-   timestamp:true,  //crea dato creacion y actualizacion
-   versionKey:false, //elimina _v prop version en BD
-   currentTime: () => Math.floor(Date.now() / 1000) //no se bien
+    timestamp: true,  //crea dato creacion y actualizacion
+    versionKey: false, //elimina _v prop version en BD
+    currentTime: () => Math.floor(Date.now() / 1000) //no se bien
   }
 );
 const Tank = new mongoose.model('Tank', yourSchema);
 
-yourSchema.virtual('fullName').get(()=> {  //para devolver info
+yourSchema.virtual('fullName').get(() => {  //para devolver info
   return 'first +   +name.last';
 });
-//2 formas de agregar 
+
+//#region Insert 2 formas de agregar 
 /* Tank.create({name:'Ana',size: 'small11' }, (err:any)=> {
   if (err) return handleError(err);
 }) */
-const insertTank = async ()=>{
+const insertTank = async () => {
   try {
-    await Tank.create({name:'Ana',size: 'small',cel :20 });   
+    await Tank.create({ name: 'Ana', size: 'small', cel: 20 });
     console.log('saved!');
   } catch (error) {
     //assert.equal(error, null);
     console.log('Not saved!', error);
   }
 }
+//#endregion
+
 /* //errorresponse
 let erro;
 erro = Tank.validateSync();
 //assert.equal(erro.errors['size'].message,'User size number required');
  */
-const Tank2 = new Tank ({name:'manu',size: 'big',cel :27 });   
-//findOne
+const Tank2 = new Tank({ name: 'manu', size: 'big', cel: 27 });
+
+//#region findOne
 const findOne = async () => {
-  const res =  await Tank.findOne({ name: 'Juancito' });
+  const res = await Tank.findOne({ name: 'Juancito' });
   if (res == null || res instanceof Object) {
     //throw new Error('should be populated');
     console.log('should be populated');
+    console.log('ONE=', res);
   } else {
     // Works
     console.log('Tank.name.trim();');
   }
-  console.log('RES=', res);
 }
-// `updatedAt`.
-const findOneAndUpdate = async ()=>{
-const res = await Tank.findOneAndUpdate({ name: 'Mono' }, { name: 'test3' }, {
-  new: true,
-  timestamps: false
-});
-console.log('Update-',Tank.updatedAt);
-console.log('resres-',res);
+//#endregion
+
+//#region fundAll
+const findAll = async () => {
+  const res = await Tank.find();
+  console.log(res);
 }
-/* Tank.insertMany([{ name:'Mono',size: 'small',cel:7 },
-{ name:'Juancito',size: 'big',cel:10 }], (err:any)=> {
-  if (err) return handleError('Error-insertMany');
-  // saved!
-}); */
+//#endregion
+
+// #region findOneAndUpdate
+const findOneAndUpdate = async () => {
+  const res = await Tank.findOneAndUpdate({ name: 'Mono' }, { name: 'test3' }, {
+    new: true,
+    timestamps: false
+  });
+  console.log('Update-', Tank.updatedAt);
+  console.log('resres-', res);
+}
+//#endregion
+
+//#region insertMany
+const insertMany = async () => {
+  Tank.insertMany([{ name: 'Mono', size: 'small', cel: 7 }, { name: 'Juancito', size: 'big', cel: 10 }], (err: any) => {
+    if (err) return handleError('Error-insertMany');
+    // saved!
+  });
+}
+//#endregion
+
+//#region dropCollection
+const dropCollection = async () => {
+  try {
+    const res = Tank.dropCollection('ususas');
+    console.log('Ok drop collection!!');
+  } catch (error) {
+    console.log(error);
+  }
+}
+//#endregion
+
+//#region CerrarConeccion
+const cerrarConeccion = async () => {
+  setTimeout(() => {
+    console.time('desconeccion')
+    mongoose.disconnect();
+    const estado = mongoose.connection.readystate;
+    console.timeEnd('desconeccion');
+    /* mongoose.connection.getClient().options. */
+    console.log('desconeccion', estado);
+
+    /*   const state = await conn.connection.readyState; // MongoClient { ... }
+    console.log(`-ESTADO- ${state}`); */
+  }, 3000);
+}
+//#endregion
 
 //#endregion
 
 //#region OWNER
-const ownerSchema=new mongoose.Schema({
-  name:String,
+const ownerSchema = new mongoose.Schema({
+  name: String,
   //name:{Type:String,,required: [true, 'Who is Owner?'],
-  direcction:{Type:String},
- },
- {
-  timestamp:true,  //crea dato creacion y actualizacion
-  versionKey:false //elimina _v prop version en BD
- })
- const ownerModel = new mongoose.model('owner',ownerSchema );
+  direcction: { Type: String },
+},
+  {
+    timestamp: true,  //crea dato creacion y actualizacion
+    versionKey: false //elimina _v prop version en BD
+  })
+const ownerModel = new mongoose.model('owner', ownerSchema);
 
- const insertOwner = async () => {
+const insertOwner = async () => {
   const own = await ownerModel.create({
-    name:'Juancito', 
+    name: 'Juancito',
     direcction: 'Labandera 817'
   })
- }
+}
 //#endregion
 
 //#region PETS
 const petSchema = new mongoose.Schema({
-  name: { type: String},//,required: true 
+  name: { type: String },//,required: true 
   color: {
     type: String!,
     enum: {
       values: ['Coffee', 'Tea'],
-      message: '{VALUE} is not supported' 
+      message: '{VALUE} is not supported'
     }
   },
   age: {
@@ -217,36 +281,36 @@ const petSchema = new mongoose.Schema({
     max: [33, 'Must be at greater than 33!!, got {VALUE}'],
   },
   owner: {
-    type: Types.ObjectId, ref:'owner'
+    type: Types.ObjectId, ref: 'owner'
     //type: mongoose.Types.ObjectId, ref:'owner'
   },
 },
   { timestamps: true }
 )
 
-const petModel = new mongoose.model('pet',petSchema);
+const petModel = new mongoose.model('pet', petSchema);
 
-const insertarPet = async  ()=>{
-     
-/* try {
-  await petModel.validate({ name: null }, ['name'])
-} catch (err:any) {
-  err instanceof mongoose.Error.ValidationError; // true
-  Object.keys(err.errors); // ['name']
-}  */
+const insertarPet = async () => {
+
+  /* try {
+    await petModel.validate({ name: null }, ['name'])
+  } catch (err:any) {
+    err instanceof mongoose.Error.ValidationError; // true
+    Object.keys(err.errors); // ['name']
+  }  */
   const uu = await petModel.create({
-    name:'Gardel ',
-    color:'grey',
-    age:334,
-    owner!:''
+    name: 'Gardel ',
+    color: 'grey',
+    age: 334,
+    owner!: ''
   });
   console.log(`Insertado el usu- ${uu}`);
 }
 //#endregion
 
 
-function handleError(err: string) {  
-  console.log(err,'Function dice:');
+function handleError(err: string) {
+  console.log(err, 'Function dice:');
   throw new Error(err);
 }
 
