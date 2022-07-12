@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 const UserSchema = require('../schemas/userSchema');
 
 
- const  usuario = new mongoose.model('ususa',UserSchema);
+//export const UsuarioModel = new mongoose.model('userssss',UserSchema);
+export const UsuarioModel = new mongoose.model('users',UserSchema);
 
- export default usuario;
+
+ //export default UsuarioModel;
+ module.exports = {UsuarioModel};
