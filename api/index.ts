@@ -1,7 +1,7 @@
 'use strict'
 //const express = require('express');
 //const cors = require('cors');
-const bodyParser = require("body-parser");
+//const bodyParser = require("body-parser");
 //import { Router} from 'express';
 //const Router = require('Router');
 //import mongoose from 'mongoose';
@@ -19,8 +19,11 @@ import {CategoryModel} from './models/categoryModel';
 import {FollowModel} from './models/followModel';
 import {MessageModel} from './models/messageModel';
 
+//import {init} from './app';
+const app = require ('./app'); //configurardor de expres para el servidor
+
 //#region mongoose
-/* ** MONGOOSE**** */
+/* ******** MONGOOSE**** *******/
 /* mongoose.connect(mongoUrl, { useNewUrlParser: true });
 var db = mongoose.connection;
 !db ? console.log("Hubo un error conectandose a la base de datos") : console.log("Conexión a base de datos satisfactoria");
@@ -51,8 +54,8 @@ const options2 = {
 //#endregion
 
 //#region init()
-const init2 = async () => {
-  console.time("Tiempo coneccion a BD");
+const init = async () => {
+  console.time("Tiempo coneccion a BD y creacion Servidor con Express");
   try {
     /*const conn = await mongoose.connect(
    MONGO_DB,options2,(er:any)=>{
@@ -64,17 +67,29 @@ const init2 = async () => {
     const connection = mongoose.createConnection('mongodb://localhost:27017/test');
     const Tank = connection.model('Tank', yourSchema);*/
 
+    //const conn = await mongoose.connect(uriAtlas, { serverSelectionTimeoutMS: 5000 }) //cuánto tiempo mongoose.connect()se volverá a intentar la conexión inicial antes de fallar.
     const conn = await mongoose.connect(MONGO_DB, { serverSelectionTimeoutMS: 5000 }) //cuánto tiempo mongoose.connect()se volverá a intentar la conexión inicial antes de fallar.
     //const conn = await mongoose.connect(MONGO_DB, options2)
 
     console.log(`Connected to MongoDB!\nNAME DB: ${mongoose.connection.getClient().options.dbName}`);
 
     const state = await conn.connection.readyState; // MongoClient { ... }
-    console.log(`-ESTADO- ${state}`);
+    console.log(`-Estado de la Coneccion- ${state}`);
 
     //console.log('COUNT',conn.Collection('calabrese').count());
+    
+    /**************  Creacion des Servidor app con express */
 
-    console.timeEnd("Tiempo coneccion a BD");
+  /* const ya = async ()=>{
+    setTimeout(()=>
+  {app;
+    console.log('ADELANTE');}
+  ),2000;
+  } ;ya(); */
+  
+  //await app;
+
+    console.timeEnd("Tiempo coneccion a BD y creacion Servidor con Express");
 
     // -------------  DESCONECCION  ------------
     //cerrarConeccion(conn); /*llamo a esta o uso metodo de abajo*/
@@ -84,12 +99,26 @@ const init2 = async () => {
 
     //#region USUARIOS metodos
     //crearUsuarios();
-    ////findAllUsus();
+    //findAllUsus();
     //findByIdUsu();
     //updateOneUsu();
     //deleteOneUsu();    
     //#endregion
    
+    //#region Veterinaria, Pets, Owners
+    //getVeterinaria();
+    //deleteVetById();
+    //finddeleteCollection();
+    //findOneAndUpdateVet();
+    //insertManyVet();
+    //getPetGroup();
+    //insertarPet();
+    //countPet();
+    //insertOwner();
+    //countOwner();
+    //getOwners();
+    //#endregion  
+
     //#region CATEGORIES
     //createCat();
     //categoryCount();
@@ -97,7 +126,7 @@ const init2 = async () => {
     //relCategoryPost(); //todas las categoris con que estan en post
     //#endregion
 
-    //#region PUBLICACIONES metodos
+    //#region PUBLICACIONES POST metodos
     //crearPosts();
     //findAllPosts();
     //findByIdpost();
@@ -123,7 +152,7 @@ const init2 = async () => {
     //#endregion
     
     //#region MESSAGE
-    createMessage();
+    //createMessage();
     //getMessage();
     //findAllMessage();
     //countMessageAggregate();
@@ -133,9 +162,7 @@ const init2 = async () => {
     //#endregion
 
     //#region PruebaTank metodos
-    // insertarPet();
     //insertarUsus();
-    //insertOwner();
     //insertTank().catch(err => console.log(err,'Ta le erro'));
     //findOne();
     //findOneAndUpdate();
@@ -176,7 +203,7 @@ a través de mongoose.model('ModelName')él, no funcionará
   /////module.exports = db;  //esta ser la requerida con .db desde index o donde sea que este el express(), etc 
 
 }
-init2();
+init();
 
 //#endregion
 
@@ -213,7 +240,7 @@ try {
 //#region findById
 const findByIdUsu = async()=>{
   try {
-  const res = await UsuarioModel.findById('62cc6a3dcd2b2fed889c70d4');
+  const res = await UsuarioModel.findById('62cc6e8efe33c6d855e60d99');
   console.log('Por ID:',res.name);    
   } catch (error) {
     console.log('No exist this ID usuario');    
@@ -532,13 +559,14 @@ const relCategoryPost = async () => {
 //#endregion
 
 //#region MESSAGE CRUD
-//#region create
+//#region create , { unique:true }
 const createMessage = async ()=>{
   try {
     
    // mongoose.set('useCreateIndex', true); //para crear unique debo crear inice
 //await MessageModel.createIndex({'message':1}, { unique:true })
     const response = await MessageModel.create(
+      //hacer una consulta antes para verificar si existe el usuario sino usar el catch para el front
      [ {userEmmiter:'62cc6e8efe33c6d855e60d99',userReciver:'62cc6e8efe33c6d855e60d9c', message:'Holalaaa!!!'},
       {userEmmiter:'62cc6e8efe33c6d855e60d9b',userReciver:'62cc6e8efe33c6d855e60d9d',message:'Estas ahi?'},    
      { userEmmiter:'62cc6e8efe33c6d855e60d9d',userReciver:'62cc6e8efe33c6d855e60d9a',message:'Vmo Feniii!!!'},
@@ -553,7 +581,8 @@ const createMessage = async ()=>{
     ],
     )
     console.log('Message create succefully');
-  }catch (err){console.log('Error create message',err);
+  }catch (err){
+    console.log('Error create message',err);
   }
 };
 //#endregion
@@ -907,8 +936,7 @@ const findFiltro = async()=>{
   });
   console.log('mayor===>',res.length);
  } catch (error) {
-  console.log('ERROR FILTRO');
-  
+  console.log('ERROR FILTRO');  
  }
 }
 //#endregion
@@ -942,48 +970,87 @@ const dropCollection = async (dato:any) => {
 
 //#region OWNER
 const ownerSchema = new mongoose.Schema({
-  name: String,
-  //name:{Type:String,,required: [true, 'Who is Owner?'],
-  direcction: { Type: String },
+  name: { type: String },
+  doc: { type: String, required: [true, 'Where is Document?'], unique: true },
+  dire: { type: String },
 },
   {
     timestamps: true,  //crea dato creacion y actualizacion
     versionKey: false //elimina _v prop version en BD
-  })
-const ownerModel = new mongoose.model('owner', ownerSchema);
+  }
+)
+const ownerModel = new mongoose.model('owners', ownerSchema);
 
 const insertOwner = async () => {
-  const own = await ownerModel.create({
-    name: 'Juancito',
-    direcction: 'Labandera 817'
-  })
+  try{
+    const own = await ownerModel.create([
+      {name: 'Juancito',doc:'f563', dire: 'Labandera 817'},
+      {name: 'Mariano',doc:'U77w', dire: 'Misiones 5517'},
+      {name: 'Pelu',doc:'7tA88', dire: 'Lagoa 23bis'}
+    ]);
+    console.log('Creado Owner Ok');    
+  }
+  catch(err){console.log('error Owner',err);
+  }
 }
+
+const getOwners = async()=>{
+  try {
+    const res = await ownerModel.aggregate([
+      {
+        $group: { _id: "$_id" }//_id refiere a prop a mostrar de la coleccion  
+       // $group: { _id: "$name" }
+      }        
+    ])
+    console.log(`Aggregate ---${JSON.stringify(res)}`);  
+        //Lo copio y veo onLine en cualquier lugar que parsee el resultado    
+    console.log(`--AA-: ${JSON.stringify(res)}`);
+    
+    for await(let t of res)  console.log('OWNER name',t._id);
+
+  } catch (error) {
+    console.log('error take Owner'); 
+  }
+}
+      //#region aggregate COUNT 
+      const countOwner= async () => {    
+        try {  
+        const array = await ownerModel.aggregate( [
+            { $count: "myCount" }
+         ]) 
+         for await (let valor of array){
+          console.log(`Cantidad Owners ---${JSON.stringify(valor)}`);      
+          console.log(`Cantidad Owners ---${valor.myCount}`);      
+        } } catch (error) {
+          console.log('Error Owners', error);
+        }
+      } 
+      //#endregion
 //#endregion
 
 //#region PETS
 const petSchema = new mongoose.Schema({
-  name: { type: String },//,required: true 
-  color: {
-    type: String!,
-    enum: {
-      values: ['Coffee', 'Tea'],
-      message: '{VALUE} is not supported'
-    }
+  name: { type: String ,required: true 
+  },
+  color: { type: String!, enum: {
+      values: ['Brown', 'Black','White'],
+      message: '{VALUE} is not supported'}
   },
   age: {
     type: Number,
-    min: [6, 'Must be at least 6!!, got {VALUE}'],
-    max: [33, 'Must be at greater than 33!!, got {VALUE}'],
+    min: [2, 'Must be at least 2!!, got {VALUE}'],
+    max: [13, 'Must be at greater than 13!!, got {VALUE}'],
   },
+  vaccine:{type:Boolean, required: true, default: false},
   owner: {
-    type: Types.ObjectId, ref: 'owner'
+    type: Types.ObjectId, ref: 'owners'
     //type: mongoose.Types.ObjectId, ref:'owner'
   },
 },
-  { timestamps: true }
+  { timestamps: true, versionKey:false }
 )
 
-const petModel = new mongoose.model('pet', petSchema);
+const petModel = new mongoose.model('pets', petSchema);
 
 const insertarPet = async () => {
 
@@ -993,16 +1060,123 @@ const insertarPet = async () => {
     err instanceof mongoose.Error.ValidationError; // true
     Object.keys(err.errors); // ['name']
   }  */
-  const uu = await petModel.create({
-    name: 'Gardel ',
-    color: 'grey',
-    age: 334,
-    owner!: ''
-  });
-  console.log(`Insertado el usu- ${uu}`);
+  const pet1 = {name:'Gardel', color:'Black',age: 10, vaccine:true, owner!: '62d2c2a6f8f6d1c5beb68d94'};
+  const pet2= {name:'Pele', color:'Brown', age: 9,vaccine:true,owner!: '62d2c2a6f8f6d1c5beb68d95'};
+  const pet3= {name:'Chiche', color:'White', age: 4,vaccine:false,owner!: '62d2c2a6f8f6d1c5beb68d95'};
+  const pet4= {name:'Maui', color:'Brown', age: 5,vaccine:false,owner!: '62d2c2a6f8f6d1c5beb68d96'  };
+  try {
+  const res = await petModel.create([pet1,pet2,pet3,pet4]);
+        console.log(`Insertado el usu- ${res}`);
+      }
+    catch (error) {
+      console.log(`NO Insert PET- ${error}`);
+    }  
+}
+//#region countPet();
+const countPet = async()=>{
+  try {
+    const res = await petModel.aggregate([
+      { $count: "myCount" }
+  ]) 
+  for await (let valor of res){
+   console.log(`Cantidad Pet ---${JSON.stringify(valor)}`);      
+   console.log(`Cantidad Pet ---${valor.myCount}`); } 
+  } catch (error) {
+    console.log(`Count PET- ${error}`);
+  }
 }
 //#endregion
+    //#region getPetGroup
+    const getPetGroup = async () => {
+      try {
+        const response = await petModel.aggregate([
+          {
+            $group: { _id: "$vaccine" }//_id refiere a prop a mostrar de la coleccion
+          }
+        ]);
+        console.log(`Aggregate ---${JSON.stringify(response)}`);
+        console.log(`--AA-: ${JSON.stringify(response)}`);
+        for await(let t of response)  console.log(' PET name',t._id);
+      } catch (error) {
+        console.log('Error GET Pet', error);
+      }
+    };
+    //#endregion
+//#endregion
 
+//#region veterinaria
+//#region Schema y Model con unique:true
+const vetSchema = new mongoose.Schema(
+  {
+    name:{ type:String, unique:true },
+    dire: { type: String, required: [true, 'Why no direccion?'] },
+  },
+  {
+    timestamps: true,  //crea dato creacion y actualizacion
+    versionKey: false, //elimina _v prop version en BD
+    //currentTime: () => Math.floor(Date.now() / 1000) //no se bien
+  }
+);
+const vetModel = new mongoose.model('veterinarias', vetSchema);
+//#endregion
+//#region insertManyVet
+const insertManyVet = async () => {
+  vetModel.insertMany([{ name: 'Vet sayago', dire: 'Garzon 124' }, { name: 'Vete Prado', dire: 'Lucas obes 663' }],
+   (err: any) => {
+    if (err) return handleError('Error-insertMany');
+    // saved!
+  });
+}
+//#endregion
+//#region getVeterinaria
+const getVeterinaria = async () => {
+  try {
+    const res = await vetModel.find()
+    res.forEach((element: any) => {
+      console.log(element._id, ' NAME===>', element.name + '---' + element.dire);
+    })
+  } catch (error) {
+    console.log('ta le erro a la veterinaria', error);
+  }
+}
+//#endregion
+//#region findOneAndUpdateVet
+const findOneAndUpdateVet = async () => {
+  try {
+    const res = await vetModel.findOneAndUpdate({ _id: '' },
+      { name: 'Veterinaria Capurro', dire: "Capurro 5522" },
+      {
+        new: true,
+        timestamps: true
+      });
+    console.log('Update-', vetModel.updatedAt);
+    console.log('Yes NAME-', res);
+  } catch (error) {
+    console.log('No Update', error);
+  }
+}
+//#endregion
+//#region deleteVetById
+const deleteVetById = async () => {
+  try {
+    vetModel.deleteOne({ _id: '62d6c466a1b8d454f67d9c85' });
+    console.log('IS deleted');
+  } catch (error) {
+    console.log('No eliminó nada', error);
+  }
+}
+    
+    const deleteCollection = async () => {
+      try {
+        vetModel.collection.drop();
+        console.log('IS drop');
+      } catch (error) {
+        console.log('No eliminó nada', error);
+      }
+    }
+    
+    //#endregion
+    //#endregion
 
 //#region CerrarConeccion
 const cerrarConeccion = async (cone:any) => {

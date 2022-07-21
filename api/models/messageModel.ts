@@ -7,3 +7,4 @@ export const MessageModel = new mongoose.model('messages',MessageSchema);
 
  //export default MessageModel;
  //module.exports = {MessageModel};
+ //export const MessageModel; 

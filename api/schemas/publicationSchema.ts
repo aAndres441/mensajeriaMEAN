@@ -6,7 +6,7 @@ import mongoose from "mongoose";
         name: { type: String, required: [true, 'Why no Name?'] },
         description: { type: String, required: [true, 'Why no Description?']},
         file: { type: String! },
-        userId: { type: mongoose.Types.ObjectId, required: [true, 'Why no Usuario ID?']},   //guarda relacion con user
+        userId: { type: mongoose.Types.ObjectId, ref:'users', required: [true, 'Why no Usuario ID?']},   //guarda relacion con user
         category:{type:Array, required: [true, 'not to forget category'],default:[]}
     },
     {
