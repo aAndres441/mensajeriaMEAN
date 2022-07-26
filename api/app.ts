@@ -9,7 +9,7 @@ const category_rutes = require('./routes/categoryRoutes');
 
 /* export const init = async () => { */
 
-console.time("Espera de ejecucion");
+console.time("Espera de ejecucion Servidor con Express");
 
 export const app = express(); 
 
@@ -75,7 +75,7 @@ try {
 
 
 
-console.timeEnd("Espera de ejecucion");
+console.timeEnd("Espera de ejecucion Servidor con Express");
 
 /* }
 init(); */

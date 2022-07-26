@@ -11,16 +11,15 @@ const router = require('router'); */
 import { Schema, model, Document, Types,Mongoose } from 'mongoose';
 const IUser = require('./interfaces/Iuser');
 
-//const Usuario = require('./models/userModel');
-import {UsuarioModel} from './models/userModel';
-//const pub = require('./models/publicacionModel');
-import {PublicacionModel} from './models/publicationModel';
-import {CategoryModel} from './models/categoryModel';
-import {FollowModel} from './models/followModel';
-import {MessageModel} from './models/messageModel';
+const UsuarioModel = require('./models/userModel');
+//import {UsuarioModel} from './models/userModel';
+const PublicacionModel = require('./models/publicationModel');
+const CategoryModel = require('./models/categoryModel');
+const FollowModel = require('./models/followModel');
+const MessageModel = require('./models/messageModel');
 
 //import {init} from './app';
-const app = require ('./app'); //configurardor de expres para el servidor
+const app = require ('./app'); //configurardor de express para el servidor
 
 //#region mongoose
 /* ******** MONGOOSE**** *******/
@@ -55,7 +54,7 @@ const options2 = {
 
 //#region init()
 const init = async () => {
-  console.time("Tiempo coneccion a BD y creacion Servidor con Express");
+  console.time("Tiempo coneccion a BD Mongoose");
   try {
     /*const conn = await mongoose.connect(
    MONGO_DB,options2,(er:any)=>{
@@ -67,8 +66,8 @@ const init = async () => {
     const connection = mongoose.createConnection('mongodb://localhost:27017/test');
     const Tank = connection.model('Tank', yourSchema);*/
 
-    //const conn = await mongoose.connect(uriAtlas, { serverSelectionTimeoutMS: 5000 }) //cuánto tiempo mongoose.connect()se volverá a intentar la conexión inicial antes de fallar.
-    const conn = await mongoose.connect(MONGO_DB, { serverSelectionTimeoutMS: 5000 }) //cuánto tiempo mongoose.connect()se volverá a intentar la conexión inicial antes de fallar.
+    const conn = await mongoose.connect(uriAtlas, { serverSelectionTimeoutMS: 5000 }) //cuánto tiempo mongoose.connect()se volverá a intentar la conexión inicial antes de fallar.
+    //const conn = await mongoose.connect(MONGO_DB, { serverSelectionTimeoutMS: 5000 }) //cuánto tiempo mongoose.connect()se volverá a intentar la conexión inicial antes de fallar.
     //const conn = await mongoose.connect(MONGO_DB, options2)
 
     console.log(`Connected to MongoDB!\nNAME DB: ${mongoose.connection.getClient().options.dbName}`);
@@ -89,7 +88,7 @@ const init = async () => {
   
   //await app;
 
-    console.timeEnd("Tiempo coneccion a BD y creacion Servidor con Express");
+    console.timeEnd("Tiempo coneccion a BD Mongoose");
 
     // -------------  DESCONECCION  ------------
     //cerrarConeccion(conn); /*llamo a esta o uso metodo de abajo*/

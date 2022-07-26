@@ -8,6 +8,7 @@ user.get('/getUsers',UserController.getUsers);
 user.get('/pruebas',UserController.pruebas);
 user.post('/postprueba',UserController.postUsuPrueba);
 user.post('/saveOne',UserController.saveOne);
-user.get('/findOne',UserController.findByIdUsu);
+user.get('/findOne',UserController.findOne);
+user.post('/login',UserController.loginUser);
 
 module.exports = user;
