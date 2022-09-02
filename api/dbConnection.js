@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 class Database {
-  async init() {
+   async init() {
 
     //const Schema = mongoose.Schema;
     const ObjectId = Schema.ObjectId;
@@ -44,17 +44,19 @@ class Database {
     const modelo = conn.model('ModelName', Schema);
     const m = new MyModel;
     m.save(); // works
+   
     //el de abajo no funciona porque el objeto de conexión predeterminado nunca se conectó
-    const conn2 = mongoose.createConnection('your connection string');
+    /* const conn2 = mongoose.createConnection('your connection string');
     const MyModel2 = mongoose.model('ModelName', schema);
     const m2 = new MyModel;
     m.save();
-
-    /* 
+ */
+    
     module.exports =db;  //esta ser la requerida con .db desde index o donde sea que este el express(), etc 
-    */
+    
 
   }
 }
+
 //export default Database;
 //module.exports = Blog = mongoose.model('blog', blogPost);

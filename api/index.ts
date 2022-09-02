@@ -11,6 +11,9 @@ const router = require('router'); */
 import { Schema, model, Document, Types,Mongoose } from 'mongoose';
 const IUser = require('./interfaces/Iuser');
 
+//import {init} from './app';
+const app = require ('./app'); //configurardor de express para el servidor
+
 const UsuarioModel = require('./models/userModel');
 //import {UsuarioModel} from './models/userModel';
 const PublicacionModel = require('./models/publicationModel');
@@ -18,8 +21,6 @@ const CategoryModel = require('./models/categoryModel');
 const FollowModel = require('./models/followModel');
 const MessageModel = require('./models/messageModel');
 
-//import {init} from './app';
-const app = require ('./app'); //configurardor de express para el servidor
 
 //#region mongoose
 /* ******** MONGOOSE**** *******/
@@ -30,10 +31,14 @@ var db = mongoose.connection;
 //#endregion
 
 //const url = 'mongodb://localhost/calabrese';
-const url = 'mongodb://localhost/mensajeria';
-const MONGO_DB = process.env.DATABASE || url;
+const urlMongoose = 'mongodb://localhost/mensajeria';
 const passAtlas = ' 1vnsvO5xVhOFGrWp ';
 const uriAtlas = 'mongodb+srv://FeniFeni:1vnsvO5xVhOFGrWp@cluster0.vz00u.mongodb.net/mensajesMEAN?retryWrites=true&w=majority';
+                
+//const MONGO_DB = process.env.DATABASE || urlMongoose;
+const MONGO_DBSInComillas = process.env.URI_ATLAS || uriAtlas;
+const MONGO_DB = MONGO_DBSInComillas.replace(/['"]+/g,'') || uriAtlas;
+
 //#region options conect to BD
 const options2 = {
   useNewUrlParser: true,
@@ -66,11 +71,16 @@ const init = async () => {
     const connection = mongoose.createConnection('mongodb://localhost:27017/test');
     const Tank = connection.model('Tank', yourSchema);*/
 
-    const conn = await mongoose.connect(uriAtlas, { serverSelectionTimeoutMS: 5000 }) //cuánto tiempo mongoose.connect()se volverá a intentar la conexión inicial antes de fallar.
-    //const conn = await mongoose.connect(MONGO_DB, { serverSelectionTimeoutMS: 5000 }) //cuánto tiempo mongoose.connect()se volverá a intentar la conexión inicial antes de fallar.
+   const conn = await mongoose.connect(MONGO_DB, { serverSelectionTimeoutMS: 5000 }) //cuánto tiempo mongoose.connect()se volverá a intentar la conexión inicial antes de fallar.
+   
+   //const conn = await mongoose.connect(uriAtlas, { serverSelectionTimeoutMS: 5000 }) //cuánto tiempo mongoose.connect()se volverá a intentar la conexión inicial antes de fallar.
+     //const conn = await mongoose.connect(MONGO_DB, { serverSelectionTimeoutMS: 5000 }) //cuánto tiempo mongoose.connect()se volverá a intentar la conexión inicial antes de fallar.
     //const conn = await mongoose.connect(MONGO_DB, options2)
 
-    console.log(`Connected to MongoDB!\nNAME DB: ${mongoose.connection.getClient().options.dbName}`);
+    //console.log(`MONGO_DB ${MONGO_DB}`);
+    //console.log(`uriAtlas ${uriAtlas}`);
+
+    console.log(`Connected to MongoDB!\nNAME DB: ${mongoose.connection.getClient().options.dbName}--⚙-- `);
 
     const state = await conn.connection.readyState; // MongoClient { ... }
     console.log(`-Estado de la Coneccion- ${state}`);
@@ -269,7 +279,7 @@ const updateOneUsu =async () => {
   }
 }
 //#endregion
-//#endregion 
+//#endregion USUARIOS CRUD
 
 //#region PUBLICACIONES POST CRUD
     //#region crearPosts 

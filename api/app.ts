@@ -7,22 +7,23 @@ const follow_rutes = require('./routes/followRoutes');
 const publication_rutes = require('./routes/publicationRoutes');
 const category_rutes = require('./routes/categoryRoutes');
 
-/* export const init = async () => { */
-
 console.time("Espera de ejecucion Servidor con Express");
 
-export const app = express(); 
+ export const app = express(); 
+
+ const init = async () => {
 
 //#region middlewares //middleware metodo qe se ejecuta antes de un controlador
 app.use(cors());
-app.use(bodyParser.json());
+app.use(bodyParser.json()); //o app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 //#endregion   
 //#region cors
 //#endregion   
 try {
   //#region settings
-  app.set('port', process.env.PORT || 2022); //seteamos una variable que inventamos, port, a express para abrir en el puerto del sist operativo o en 3000
+  app.set('port', process.env.PORT || 3001); //seteamos una variable que inventamos, port, a express para abrir en el puerto del sist operativo o en 3000
+  //app.set('port', 3001); //seteamos una variable que inventamos, port, a express para abrir en el puerto del sist operativo o en 3000
   //#endregion
   //#region rutas
 
@@ -42,7 +43,9 @@ try {
       "message": `Well well, Hello My World !!!!`
     });
   })
-  app.get('/api/about', (req: any, res: any) => { res.send(`App conectado about ${app.get('port')}`) });
+  app.get('/api/about', (req: any, res: any) => { 
+    res.send(`App conectado about ${app.get('port')}`);
+  });
   app.get('/home', (req: any, res: any) => {
     res.send(`status ${res.statusCode} at Home`);
   })
@@ -73,12 +76,10 @@ try {
   console.log('ERRAR', error);
 }
 
-
-
 console.timeEnd("Espera de ejecucion Servidor con Express");
 
-/* }
-init(); */
+}
+init();
 
 //module.exports  = init();
 //export default init
