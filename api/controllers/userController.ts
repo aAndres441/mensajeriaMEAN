@@ -3,6 +3,7 @@
 import { UsuarioModel } from '../models/userModel';
 import { IUser } from '../interfaces/Iuser';
 const usu_service = require('../services/usuService');
+import {Request,Response} from 'express';
 const lodash = require('lodash'); //trabajar con obj y array
 
 const bcryptNode = require('bcrypt-nodejs');
@@ -32,6 +33,7 @@ const postUsuPrueba = async (req: any, res: any) => {
   }
 }
 
+//#region type
 /* ******** TYPE **********************/
 type Usuario = { name: string, lasName: string, pass: string }
 let ussuu: Usuario
@@ -45,10 +47,12 @@ const speak = (req: any, res: any) => {
 };
 
 //speak(() => 99);
-
 /**********************************/
+//#endregion
+
 //#region saveUser
 const saveOne = async (req: any, res: any) => {
+//const saveOne = async (req: Request, res: Response) => {
   //rol solo enum: ['admin', 'user']
   const params = req.body;
   if (!params.name || !params.password || !params.surname || !params.cel) {
@@ -56,6 +60,16 @@ const saveOne = async (req: any, res: any) => {
     return res.status(400).send({ message: 'Faltan datos' });
   }
 
+  let user2:IUser = {
+    name: params.name,
+    surname: params.surname,
+    nick: params.nick,
+    email: params.email,
+    //password: esOpcional, se agrega despues
+    role: params.role,
+    image: params.image || null,
+    cel: params.cel
+  }
   let user = new UsuarioModel();
   user.name = params.name,
     user.surname = params.surname,
@@ -69,10 +83,12 @@ const saveOne = async (req: any, res: any) => {
   /* Condicion checkRepetido para no agregar email o nick repetido en BD*/
   // find por prop &or:[]
 
-  const rer = await usu_service.findWithName(user.name);
+  ////const rer = await usu_service.findWithName(user.name);
+  const rer = await usu_service.findWithName(user2.name);
   console.log('hhhhhh', rer);
 
-  const checkRepetido = await usu_service.checkRepetido(user.email.toLowerCase(), user.nick.toLowerCase())
+  ///const checkRepetido = await usu_service.checkRepetido(user.email.toLowerCase(), user.nick.toLowerCase())
+  const checkRepetido = await usu_service.checkRepetido(user2.email, user2.nick)
     .exec((err: any, users: any) => {
       /* console.log('checkRepetido',checkRepetido);
       res.status(200).send({ message: checkRepetido, status:res.statusCode }); */
@@ -101,7 +117,8 @@ const saveOne = async (req: any, res: any) => {
       } else {
         //let passwordHaash = await bcryptJs.hash(params.password, null,null,());
         let passwordHash = bcryptJs.hashSync(params.password, 8);
-        user.password = passwordHash;
+        user2.password = passwordHash;
+        user.password = passwordHash; //este es para cuando use el usu sin Iusu
 
         /////return res.status(200).send({ massage: 'OKA'})
         saveUsuario();
@@ -122,8 +139,9 @@ console.log('ONE=',error);
 
   const saveUsuario = async () => {
     try {
-      await usu_service.saveOne(user)
-        .exec((err: any, dev: any) => {
+      ///await usu_service.saveOne(user)
+      await usu_service.saveOne(user2)
+    /*     .exec((err: any, dev: any) => {
           if (err) {
             console.log('err', err);
             return res.status(500).send({ massage: 'error al guardar el Usuario', Status: `${res.statusCode}` })
@@ -135,7 +153,10 @@ console.log('ONE=',error);
             res.status(404).send({ message: 'no registro el usuario' });
             console.log("no no worked");
           }
-        });
+        }); */
+
+
+        
       /*  
        user.save((err: any,user:any) => {
          if (err) {
@@ -452,7 +473,7 @@ const findOtro = async (req: any, res: any) => {
   }
 }
 //#endregion
-//#region findAllUsers trae array de todos
+//#region findAllUsers paginacion trae array de todos
 //recibe por URL un numero para paginacion
 const getUsers = async (req: any, res: any) => {
   try {
@@ -507,7 +528,7 @@ const getUsers = async (req: any, res: any) => {
 //#endregion
 
 //#region delete
-const deleteOne = async (req: any, res: any) => {
+const deleteOne = async (req: Request, res: Response) => {
   const body = req.body.identificador;
   const param = req.params.identificador;
 

@@ -1069,10 +1069,10 @@ const insertarPet = async () => {
     err instanceof mongoose.Error.ValidationError; // true
     Object.keys(err.errors); // ['name']
   }  */
-  const pet1 = {name:'Gardel', color:'Black',age: 10, vaccine:true, owner!: '62d2c2a6f8f6d1c5beb68d94'};
-  const pet2= {name:'Pele', color:'Brown', age: 9,vaccine:true,owner!: '62d2c2a6f8f6d1c5beb68d95'};
-  const pet3= {name:'Chiche', color:'White', age: 4,vaccine:false,owner!: '62d2c2a6f8f6d1c5beb68d95'};
-  const pet4= {name:'Maui', color:'Brown', age: 5,vaccine:false,owner!: '62d2c2a6f8f6d1c5beb68d96'  };
+  const pet1 = {name:'Gardel', color:'Black',age: 10, vaccine:true, owner: '62d2c2a6f8f6d1c5beb68d94'};
+  const pet2= {name:'Pele', color:'Brown', age: 9,vaccine:true,owner: '62d2c2a6f8f6d1c5beb68d95'};
+  const pet3= {name:'Chiche', color:'White', age: 4,vaccine:false,owner: '62d2c2a6f8f6d1c5beb68d95'};
+  const pet4= {name:'Maui', color:'Brown', age: 5,vaccine:false,owner: '62d2c2a6f8f6d1c5beb68d96'  };
   try {
   const res = await petModel.create([pet1,pet2,pet3,pet4]);
         console.log(`Insertado el usu- ${res}`);

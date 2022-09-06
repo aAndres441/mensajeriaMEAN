@@ -84,4 +84,5 @@ init();
 //module.exports  = init();
 //export default init
 // no anda asi, export const init;
-module.exports = app;
+
+//module.exports = app; ya esta exportado mas arriba

@@ -1,3 +1,7 @@
+/**
+ * exporta las rutas
+ */
+
 const express = require('express');
 
 const UserController = require ('../controllers/userController');

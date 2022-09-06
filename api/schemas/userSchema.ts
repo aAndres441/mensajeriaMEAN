@@ -11,8 +11,8 @@ const UserSchem2 = new Schema({
 })
 /* PUEDE SER COMO ARRIBO O ABAJO */
 
-//export const UserSchema = new mongoose.Schema(
- const UserSchema = new mongoose.Schema(
+export const UserSchema = new mongoose.Schema(
+// const UserSchema = new mongoose.Schema(
     {
         //{type:String,unique:true},
         //Role = admin', 'user

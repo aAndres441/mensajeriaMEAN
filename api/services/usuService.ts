@@ -23,8 +23,10 @@ const findOtro = async (usu: IUser) => {
 }
 const findWithName = async (dato: string) =>{
    //const res =  UsuarioModel.findIndex((dato:any)=>dato.name===name);
+   console.log('Find NAME' , dato);
+   
    const res= await UsuarioModel.findOne({ name: dato }).exec();
-    console.log('ooooo',res);
+    console.log('ooNameooo',res);
     return res;    
 }
 const findWithEmail =  async (dato: string) =>{
@@ -42,11 +44,13 @@ const findById =  async (dato: string) =>{
 }
 
 //const checkRepetido =  (email:any,nick:any)=>{
-    const checkRepetido =  (datoMail:any,datoNick:any)=>{
+    const checkRepetido =  (datoMail:string,datoNick:string)=>{
+         let emai=datoMail.toLowerCase();
+         let avatar=datoMail.toLowerCase();
         const res =  UsuarioModel.find({
             $or:[
-                {email:datoMail},
-                {nick:datoNick}
+                {email:emai},//le hago aca el casteado, antes eera en controller
+                {nick:avatar} //le hago aca el casteado
             ]
         });   
         return res
@@ -61,7 +65,8 @@ const getUsers = async () => {
     }
 }
 
-const saveOne = async (dato: any) => { // dato;IUser
+////const saveOne = async (dato: any) => { // dato;IUser
+const saveOne = async (dato: IUser) => { // dato;IUser
     //const res = UsuarioModel.create(dato);
     //const res = UsuarioModel.save(dato).exec((err: any, devolucion: any )=>{})
     /* const resuelve =  *///UsuarioModel.create({ dato }, (err: any, devolucion: any) => {
@@ -74,7 +79,20 @@ const saveOne = async (dato: any) => { // dato;IUser
         } */
     //});/* 
     console.log('uuid',uuid());
-    const res = await UsuarioModel.create(dato);
+    const res = await UsuarioModel.create(dato)
+    .exec((err: any, dev: any) => {
+        if (err) {
+          console.log('err', err);
+          return res.status(500).send({ massage: 'error al guardar el Usuario', Status: `${res.statusCode}` })
+        }
+        if (dev) {
+          res.status(200).send({ message: 'Guardado correctamente', usuario: res, Status: `${res.statusCode}` });
+          console.log(`User creado OK--${JSON.stringify(dev)}`);
+        } else {
+          res.status(404).send({ message: 'no registro el usuario' });
+          console.log("no no worked");
+        }
+      });
     return res;
 }
 
