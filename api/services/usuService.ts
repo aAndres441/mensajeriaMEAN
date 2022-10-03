@@ -56,7 +56,7 @@ const findById =  async (dato: string) =>{
         return res
     }
 
-const getUsers = async () => {
+const getUsers = async ():Promise<IUser[]|undefined> => {
     try {
         let res = await UsuarioModel.find();
          return res;

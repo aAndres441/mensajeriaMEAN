@@ -7,6 +7,10 @@ const follow_rutes = require('./routes/followRoutes');
 const publication_rutes = require('./routes/publicationRoutes');
 const category_rutes = require('./routes/categoryRoutes');
 
+/* *para Clean Architecture*/
+//const task_rutes = require('../api/cleanArchitect/infraestructure/rutas/task.Routes');
+//const task_rutes = require('./cleanArchitect/infraestructure/rutas');
+
 console.time("Espera de ejecucion Servidor con Express");
 
  export const app = express(); 
@@ -33,6 +37,8 @@ try {
   app.use('/follow', follow_rutes);
   app.use('/publication', publication_rutes);
   app.use('/category', category_rutes);
+
+  //app.use('/task', task_rutes);
 
   app.get('/', (req: any, res: any) => {
     if (res.statusCode !== 200) {
@@ -85,4 +91,4 @@ init();
 //export default init
 // no anda asi, export const init;
 
-//module.exports = app; ya esta exportado mas arriba
+//module.exports = app; //ya esta exportado mas arriba

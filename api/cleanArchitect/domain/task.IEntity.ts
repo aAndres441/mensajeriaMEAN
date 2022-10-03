@@ -1,5 +1,5 @@
 /*********
- * datos que seran los que necesito para el negocio
+ * Interface datos que seran los que me importan para el negocio
  */
 export interface ITask{
     uuid:string,

@@ -475,7 +475,7 @@ const findOtro = async (req: any, res: any) => {
 //#endregion
 //#region findAllUsers paginacion trae array de todos
 //recibe por URL un numero para paginacion
-const getUsers = async (req: any, res: any) => {
+const getUsers = async (req: any, res: any):Promise<IUser[] | undefined>=> {
   try {
     let identity_user_id = req.user;
     console.log('idenyidad', identity_user_id);
@@ -513,12 +513,13 @@ const getUsers = async (req: any, res: any) => {
       //console.log("cities".at(-1));
       //console.log(cities[cities.length-1]);
 
-      res.status(200).send({ message: resultado });
-
+       res.status(200).send({ message: resultado });
+      return resultado;
     } else {
       console.log('error en la peticion');
 
       res.status(500).send({ message: 'error en la peticion' });
+    return [];
     }
   } catch (error) {
     console.log('Error All', error);

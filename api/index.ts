@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 /* const path = require('path');
 const router = require('router'); */
 import { Schema, model, Document, Types,Mongoose } from 'mongoose';
-const IUser = require('./interfaces/Iuser');
+//const IUser = require('./interfaces/Iuser');
 
 //import {init} from './app';
 const app = require ('./app'); //configurardor de express para el servidor
@@ -56,6 +56,11 @@ const options2 = {
     family: 4, // Use IPv4, skip trying IPv6
   }; */
 //#endregion
+
+const arranca = ()=>{
+  console.log('Dale que arranca hee🦜 ');  
+}
+arranca();
 
 //#region init()
 const init = async () => {

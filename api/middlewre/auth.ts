@@ -68,8 +68,8 @@ exports.isAuth = (req: any, res: any, next: any) => {
       console.log('Datos del Usu Logueado ---->');
       console.log('EXPIRADO,',payload.exp);
       console.log('SUB,',payload.sub);
-      console.log(payload);
-      console.log(req.user.name);
+      console.log('payload',payload);
+      console.log('Name',req.user.name);
       console.log('-------');
       
      next();
