@@ -33,7 +33,8 @@
     "moment",
     "dotenv",
     "rimraf",
-    "uuid"
+    "uuid",
+    "DDD-Clean Architecture"
   ],
   "author": "Andres_Arias <andrarias@gmail.com>",
   "license": "MIT",
