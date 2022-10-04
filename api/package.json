@@ -9,8 +9,8 @@
     "dev:DDD": " nodemon cleanArchitect/inicio.ts",
     "start": "ts-node-dev index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "clean": "rimraf middleware/carpetaName"
-  },
+    "clean": "rimraf acarpetaBorrar/borraTodo.scss"
+  }, 
   "repository": {
     "type": "git",
     "url": "git+https://github.com/aAndres441/mensajeriaMEAN.git"
