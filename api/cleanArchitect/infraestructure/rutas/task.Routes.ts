@@ -4,10 +4,10 @@
 import express from "express";
 import { Router, Request, Response } from "express";
 
-const TaskCntr = require('../controlador/taskCtrl');
+///////const TaskCntr = require('../taskCtrl');
 
 import { TaskUserCase } from "../../application/taskUseCase";
-import { TaskControlador } from "../controlador/taskControlador";
+import { TaskControlador } from "../taskControlador";
 import { MockRepo } from "../repositorios/mockRepo";
 import { MongoRepo } from "../repositorios/mongoRepo";
 
@@ -47,17 +47,17 @@ route
     .get('/momo',controlerMock.listarTask)
     .post('/momo',controlerMock.insertCtrl)
 
-    .get('/lolo', TaskCntr.list)
+    /* .get('/lolo', TaskCntr.list)
     .get('/tasks', TaskCntr.list)
+ */
+   // .get('/taskById/:codigoId?',/*  authh.isAuth, */ TaskCntr.findById)
 
-    .get('/taskById/:codigoId?',/*  authh.isAuth, */ TaskCntr.findById)
-
-    .post('/task', TaskCntr.insertOne)
+   /* . post('/task', TaskCntr.insertOne)
 
     .patch('/:ident',TaskCntr.patchOne)
 
     .delete('/:ident',TaskCntr.deleteOne)
-
+ */
     .post('/taskMock',controlerMock.insertCtrl)
 
     
@@ -65,7 +65,8 @@ route
 //export default route;
 //export default routerTask;
 //module.exports = routerTask;
-module.exports = route/*{
+module.exports = route;
+/* module.exports = {
     route,
     routerTask
-}*/
+} */

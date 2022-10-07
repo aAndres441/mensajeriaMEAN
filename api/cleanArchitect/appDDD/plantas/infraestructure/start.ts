@@ -1,9 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import dbInit from './db/mongoose';
 
-//import task_route from './infraestructure/rutas/task.Routes';
-const task_route = require('./infraestructure/rutas/task.Routes');
+const plant_route = require('./rutas/plant.Routes');
 
 
 /*
@@ -11,10 +11,10 @@ const task_route = require('./infraestructure/rutas/task.Routes');
 sino solo o exporto e importa aca, luego lo llamo
 */
 //const mongo = require ('./infraestructure/db/mongo');
-import dbInit from './infraestructure/db/mongo';
+//import dbInit from './infraestructure/db/mongo';
 
 
-console.time("Demora en crear Servidor con Express de CleanArchitecture");
+console.time("Demoro el Servidor con Express de CleanArchitecture");
 
 const app = express();
 
@@ -29,7 +29,7 @@ const init = () => {
         
         app.set('port', process.env.PORT || 3001); //seteamos una variable que inventamos, port, a express para abrir en el puerto del sist operativo o en 3000
         
-        app.use('/task', task_route);
+        app.use('/plant', plant_route);
        
        /*  dbInit().then(()=>{
             console.log('llamada de inicio a ocneccionMongo');
@@ -41,24 +41,25 @@ const init = () => {
             }
             res.status(200).send({
               "status": `OK  ${res.statusCode}`,
-              "message": `Well well, Hello Moon!!!!`
+              "message": `Well well, Hello Plant!!!!`
             });
           })
 
+        //llama aconectarse con mongoose
         const conectaMongo = async ()=>{
             const ss = await dbInit();
-            console.log('llamada desde inicio a conectaMongo');
+            console.log('llamada desde Start Plant a conectaMongo');
         };
         conectaMongo();
 
         app.listen(app.get('port'), () => {
-            console.log((`TASK running on port http://localhost:${app.get('port')}`));
+            console.log((`PLANT running on port http://localhost:${app.get('port')}`));
           } );
     } catch (error) {
         console.log('ERRAR', error);
     }
 
-    console.timeEnd("Demora en crear Servidor con Express de CleanArchitecture");
+    console.timeEnd("Demoro el Servidor con Express de CleanArchitecture");
 }
 init();
 

@@ -6,7 +6,8 @@
   "type": "commonjs",
   "scripts": {
     "dev": " nodemon index.ts",
-    "dev:DDD": " nodemon cleanArchitect/inicio.ts",
+    "dev:task": " nodemon cleanArchitect/inicio.ts",
+    "dev:DDD": " nodemon cleanArchitect/appDDD/plantas/infraestructure/start.ts",
     "start": "ts-node-dev index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rimraf acarpetaBorrar/borraTodo.scss"

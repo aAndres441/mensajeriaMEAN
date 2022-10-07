@@ -4,21 +4,21 @@ const {Schema, model} = require('mongoose');
 //import mongoose from 'mongoose';
 //import{Schema,Model} from 'mongoose';
 //const Schema = mongoose.Schema;
-
+import { IPropiedad } from "../../domain/IPropiedad.interface";
 /* 
 * Schemma y model de Mongoose
 */
 
-const TaskSchema = new Schema({
+const PlantSchema = new Schema({
     name:{ type: String, required: [true, 'Why no Name?']},    
-    añoInicio: { type: String},
-    description: String!
+    description: { type: String,required: [true, 'Why no Description?']},
+    propiedades:{type:[String], enum: ['aceite', 'infusion','decoccion'] },
 },
 {
     timestamps: true,  //crea dato creacion y actualizacion
     versionKey: false, //elimina _v prop version en BD
 });
 
-const TaskModel = new model('task',TaskSchema);
+const PlantModel = new model('plant',PlantSchema);
 
-export default TaskModel;
+export default PlantModel;
